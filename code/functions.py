@@ -126,28 +126,21 @@ def split_data(time_vars, space_vars, depth, max_depth, temperature, year, train
   return datasets, scales
   
 def load_full():
-  time_vars, space_vars, max_depth, dates, lonlat = [], [], [], [], []
+  
+  data = np.load('../data/full_data.npz')
+  time_vars = data['features_time']
+  space_vars = data['features_space']
+  max_depth = data['max_depth']
+  dates = data['dates']
+  lonlat = data['lonlat']
+
   sites = []
-  for f in [f for f in os.listdir('../data/test/') if 'npz' in f]:
-    data = np.load('./data/test/' + f)
-    time_vars.append(data['features_time'])
-    space_vars.append( data['features_space'])
-    max_depth.append(data['max_depth'])
-    dates.append(data['dates'])
-    lonlat.append(data['lonlat'])
-    
   for i in [f for f in os.listdir('../data/test/') if 'info' in f]:
     with open('./data/test/' + i, 'rb') as f:
       sites_temp = pickle.load(f) 
-     
     sites.append(sites_temp) 
   
   sites = np.concatenate(sites).reshape(-1,1)
-  time_vars = np.vstack(time_vars)
-  space_vars = np.vstack(space_vars)
-  max_depth = np.vstack(max_depth)
-  dates = np.vstack(dates)
-  lonlat = np.vstack(lonlat)
 
   return time_vars, space_vars, max_depth, dates, lonlat, sites
   
