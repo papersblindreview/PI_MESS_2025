@@ -8,6 +8,30 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 
+def load_lake_obs():
+  # LOADING LAKE OBSERVATIONS
+  lake_obs = pd.read_csv('../data/lake_temperature_observations.csv')
+  lake_obs = lake_obs.loc[:,['date','site_id','depth','temp','source_id']]
+  
+  # unreliable source, so we drop it
+  lake_obs = lake_obs[lake_obs.source_id != 'MN_sentinel_lakes_application'].drop(columns='source_id')
+  lake_obs['date'] = pd.to_datetime(lake_obs['date'])
+  
+  
+  # LOADING LAKE METADATA (e.g., area, lon, lat)
+  lake_meta = pd.read_csv('../data/lake_metadata.csv') 
+  meta_cols = ['site_id','lon','lat','max_depth','elevation','area','driver_nldas_filepath','state','lake_name','driver_gcm_cell_no']
+  lake_meta.rename(columns={'centroid_lon':'lon', 'centroid_lat':'lat'}, inplace=True)
+  
+  
+  # MERGING OBSERVATIONS WITH METADATA FOR EACH LAKE
+  lake_obs = pd.merge(lake_obs, lake_meta[meta_cols], on='site_id', how='left')
+  lake_obs = lake_obs[lake_obs.driver_nldas_filepath.isin(os.listdir('../data/meteo_csv_files'))].dropna()
+  
+  # drop observations deeper than max depth
+  return lake_obs[lake_obs.depth < lake_obs.max_depth]
+
+
 def match_weather(site, lake_obs, lags, rollings, train_stop_year, full=False):
   site_df = lake_obs[lake_obs.site_id == site].copy()
   
