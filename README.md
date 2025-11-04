@@ -12,4 +12,8 @@
    After downloading, organize the files within the `data` directory as follows:
    - `data/GCM` — contains **climate projection files**  
    - `data/meteo_csv_files` — contains **ALL NLDAS weather files**  
-   - Any remaining data files may be placed directly in the `data/` directory
+   - Any remaining data files may be placed directly in the `data` directory
+  
+3. **Train the PI-MESS model**
+
+   Run the `pi_mess_model.py` script. At the top of the script, the toggle ``suffix'' controls which type of model is trained: 'moe' for the PI-MESS model, 'pinn' for the PINN model, and 'NPI' for the NN model. This will save the chosen model inside the `models` directory within the `code` directory.
