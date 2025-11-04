@@ -4,8 +4,58 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 os.environ["OMP_NUM_THREADS"] = "1"
 
 import pickle
+import pandas as pd
 import numpy as np
 import tensorflow as tf
+
+def match_weather(site, lake_obs, lags, rollings, train_stop_year, full=False):
+  site_df = lake_obs[lake_obs.site_id == site].copy()
+  
+  site_df['volume'] = site_df['area'] * site_df['max_depth']
+  site_df['depth_area_ratio'] = site_df['max_depth'] / site_df['area']
+  
+  weather_filename = site_df.driver_nldas_filepath.unique()[0]
+  weather_df = pd.read_csv('./data/meteo_csv_files/' + weather_filename)
+  weather_df.rename(columns={'time':'date'}, inplace=True)
+  weather_df['date'] = pd.to_datetime(weather_df['date'])
+  weather_df.sort_values(by='date', inplace=True)
+  
+  # augmenting weather dataset with lags 
+  lagged_cols = []
+  for c in list(weather_df.columns[1:]):
+    for l in lags:
+      lagged_cols.append(weather_df.loc[:,c].shift(l).rename(f'{c}_{l}_lag'))
+    for r in rollings:
+      lagged_cols.append(weather_df.loc[:,c].shift(1).rolling(window=r).mean().rename(f'{c}_{r}_mean'))
+  
+  weather_df = pd.concat([weather_df] + lagged_cols, axis=1)
+  
+  if full:
+    cols_to_keep = ['lon', 'lat', 'max_depth', 'elevation', 'area','volume','depth_area_ratio']
+    values_to_keep = np.asarray(site_df[cols_to_keep].iloc[0,:]).reshape(1,-1)
+    
+    weather_cols = list(weather_df.columns)[1:]
+    df = weather_df.copy()
+    df[cols_to_keep] = np.tile(values_to_keep, (df.shape[0],1))
+    df = df[['date'] + cols_to_keep + weather_cols]
+    df['site_id'] = site
+    df['lake_name'] = site_df.lake_name.unique()[0]
+    df['state'] = site_df.state.unique()[0]
+    df = df[df.date.dt.year > train_stop_year]
+  else:
+    # merging weather with lake obs
+    df = pd.merge(site_df, weather_df, on='date', how='left')
+    df.drop(columns=['driver_nldas_filepath'], inplace=True)
+  
+  #augmenting final data with seasonal indicators
+  df['day_sin'] = np.sin(2 * np.pi * df.date.dt.day_of_year/365)
+  df['day_cos'] = np.cos(2 * np.pi * df.date.dt.day_of_year/365)
+  
+  df['month_sin'] = np.sin(2 * np.pi * df.date.dt.month/12)
+  df['month_cos'] = np.cos(2 * np.pi * df.date.dt.month/12)
+  df['year'] = df.date.dt.year
+  
+  return df
 
 
 def load_data():
