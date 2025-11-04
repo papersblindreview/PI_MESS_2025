@@ -9,7 +9,7 @@
 
 2. **Organize the data files**
 
-   After downloading, organize the files within the `data/` directory as follows:
-   - `data/GCM/` — contains **climate projection files**  
-   - `data/meteo_csv_files/` — contains **NLDAS weather files**  
+   After downloading, organize the files within the `data` directory as follows:
+   - `data/GCM` — contains **climate projection files**  
+   - `data/meteo_csv_files` — contains **ALL NLDAS weather files**  
    - Any remaining data files may be placed directly in the `data/` directory
