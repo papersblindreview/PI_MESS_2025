@@ -12,31 +12,11 @@ from functions import *
 np.random.seed(1)
 
 
-lake_obs['driver_gcm_cell_no'] = gcm_cell
+lake_obs.drop(columns=['state','lake_name'], inplace=True)
 
-#lakes_to_proj = lake_obs[(lake_obs.lake_name.str.contains('Mendota|Mille Lacs'))].drop_duplicates(subset='site_id')
-#sites_to_proj = lakes_to_proj.site_id
-with open('./data/manuscript_sites.pkl', 'rb') as f:
-  sites_to_proj = pickle.load(f)
-
-
-# Add features as in the training data
-def augment(s, df):
-  df_temp = df[df.site_id == s].copy()
-  
-  df_temp['volume'] = df_temp['area'] * df_temp['max_depth']
-  df_temp['depth_area_ratio'] = df_temp['max_depth'] / df_temp['area']
-    
-  lagged_cols = []
-  for c in list(weather_cols):
-    for l in lags:
-      lagged_cols.append(df_temp.loc[:,c].shift(l).rename(f'{c}_{l}_lag'))
-    for r in rollings:
-      lagged_cols.append(df_temp.loc[:,c].shift(1).rolling(window=r).mean().rename(f'{c}_{r}_mean'))
-  
-  df_temp = pd.concat([df_temp] + lagged_cols, axis=1)
-  return df_temp.dropna()
- 
+# load the site codes to project
+with open('../data/manuscript_sites.pkl', 'rb') as f:
+  sites_to_proj = pickle.load(f) 
 
 for i, nc_f in enumerate(os.listdir('./data/GCM/')):
   nc_file = "./data/GCM/" + nc_f
