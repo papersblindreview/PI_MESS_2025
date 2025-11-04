@@ -20,6 +20,7 @@ def load_lake_obs():
   
   # LOADING LAKE METADATA (e.g., area, lon, lat)
   lake_meta = pd.read_csv('../data/lake_metadata.csv') 
+  lake_meta['driver_nldas_filepath'] = lake_meta['driver_nldas_filepath'].apply(lambda x: 'NLDAS_' + '_'.join(x.split('_')[2:]))
   meta_cols = ['site_id','lon','lat','max_depth','elevation','area','driver_nldas_filepath','state','lake_name','driver_gcm_cell_no']
   lake_meta.rename(columns={'centroid_lon':'lon', 'centroid_lat':'lat'}, inplace=True)
   
