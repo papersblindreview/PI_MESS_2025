@@ -11,27 +11,7 @@ from functions import *
 
 np.random.seed(1)
 
-# LOADING LAKE OBSERVATIONS
-lake_obs = pd.read_csv('../data/lake_temperature_observations.csv')
-lake_obs = lake_obs.loc[:,['date','site_id','depth','temp','source_id']]
-
-# unreliable source, so we drop it
-lake_obs = lake_obs[lake_obs.source_id != 'MN_sentinel_lakes_application'].drop(columns='source_id')
-lake_obs['date'] = pd.to_datetime(lake_obs['date'])
-
-
-# LOADING LAKE METADATA (e.g., area, lon, lat)
-lake_meta = pd.read_csv('../data/lake_metadata.csv') 
-meta_cols = ['site_id','lon','lat','max_depth','elevation','area','driver_nldas_filepath','state','lake_name','driver_gcm_cell_no']
-lake_meta.rename(columns={'centroid_lon':'lon', 'centroid_lat':'lat'}, inplace=True)
-
-
-# MERGING OBSERVATIONS WITH METADATA FOR EACH LAKE
-lake_obs = pd.merge(lake_obs, lake_meta[meta_cols], on='site_id', how='left')
-lake_obs = lake_obs[lake_obs.driver_nldas_filepath.isin(os.listdir('../data/meteo_csv_files'))].dropna()
-
-# drop observations deeper than max depth
-lake_obs = lake_obs[lake_obs.depth < lake_obs.max_depth]
+lake_obs = load_lake_obs()
 
 #########################################################################################################
 states = lake_obs['state']
@@ -41,30 +21,30 @@ lake_obs.drop(columns=['state','lake_name','driver_gcm_cell_no'], inplace=True)
 
 unique_sites = lake_obs.site_id.value_counts().index
 
-#MERGING LAKE OBS WITH WEATHER CONDITIONS, FOR EACH SITE
-lags = np.arange(1,11)
-rollings = [14,30,60,90]
-train_stop_year = 2015  
-
+lags = np.arange(1,11) # lags for each meteorological driver
+rollings = [14,30,60,90] # windows over which to take rolling averages 
+train_stop_year = 2015  # training only up to 2015
 
 ############################################################################################
-'''
-partition = np.array_split(unique_sites, 20)
+# CREATING TRAINING AND TESTING DATASETS
+
+# The function 'match_weather' grabs, for each site, the historical weather data and creates the covariates for that site
+# The input "full=False" means that we just want the days and depths for which there are observations
+# If we want to predict all depths and all days, we toggle it to True
 
 print('\nConstructing training-validation sets...')
 sys.stdout.flush()
-list_dfs = Parallel(n_jobs=-1, verbose=5)(delayed(match_weather)(site) for site in partition[part])
+list_dfs = Parallel(n_jobs=-1, verbose=5)(delayed(match_weather)(site, lake_obs, lags, rollings, train_stop_year, full=False) for site in unique_sites)
 final_df = pd.concat(list_dfs, ignore_index=True)
 final_df.dropna(inplace=True)
 sys.stdout.flush()
 print('Done.\n')
 
-
 space_feature_names = ['lon','lat','elevation','area','volume','depth_area_ratio']  
 time_feature_names = list(final_df.drop(columns=['site_id','date','temp','depth','max_depth'] + space_feature_names).columns)
 
 
-np.savez(f'./data/train_val/part_{part}.npz',
+np.savez(f'../data/train_val.npz',
         time=final_df[time_feature_names].to_numpy().astype(np.float32),
         space=final_df[space_feature_names].to_numpy().astype(np.float32),
         depth=final_df[['depth']].to_numpy().astype(np.float32),
@@ -72,9 +52,9 @@ np.savez(f'./data/train_val/part_{part}.npz',
         temperature=final_df[['temp']].to_numpy().astype(np.float32),
         year=np.array(final_df.date.dt.year).astype(np.float32))
 
-with open('./data/train_val/feature_names.pkl', 'wb') as f:
-  pickle.dump({'time':list(time_feature_names), 'space':list(space_feature_names)}, f)  
-'''
+with open('../data/train_val/feature_names.pkl', 'wb') as f:
+  pickle.dump({'time':time_feature_names, 'space':space_feature_names}, f)  
+
 
 ############################################################################################
 ## CREATING FULL DATASET TO INTERPOLATE / EXTRAPOLATE
@@ -91,7 +71,6 @@ datasets, scales = split_data(time_vars, space_vars, depth, max_depth, temperatu
 lake_obs['state'] = states
 lake_obs['lake_name'] = names
 
-'''
 lake_obs = lake_obs[(lake_obs.date.dt.year > 2015)]
 
 lake_subset = lake_obs.groupby("site_id").filter(lambda g: g["date"].nunique() > 10)
