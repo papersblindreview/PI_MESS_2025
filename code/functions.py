@@ -83,24 +83,13 @@ def match_weather(site, lake_obs, lags, rollings, train_stop_year, full=False):
 
 
 def load_data():
-  time_vars, space_vars, depth, max_depth, temperature, year = [], [], [], [], [], []
-  
-  for f in [f for f in os.listdir('../data/train_val/') if 'part' in f]:
-    data = np.load('./data/train_val/' + f)
-    time_vars.append(data['time'])
-    space_vars.append( data['space'])
-    depth.append(data['depth'])
-    max_depth.append(data['max_depth'])
-    temperature.append(data['temperature'])
-    year.append(data['year'])
-
-  time_vars = np.vstack(time_vars)
-  space_vars = np.vstack(space_vars)
-  depth = np.vstack(depth)
-  max_depth = np.vstack(max_depth)
-  temperature = np.vstack(temperature)
-  year = np.concatenate(year)
-
+  data = np.load('../data/train_val.npz')
+  time_vars = data['time']
+  space_vars = data['space']
+  depth = data['depth']
+  max_depth = data['max_depth']
+  temperature = data['temperature']
+  year = data['year']
   return time_vars, space_vars, depth, max_depth, temperature, year
 
 def split_data(time_vars, space_vars, depth, max_depth, temperature, year, train_stop=2015):
