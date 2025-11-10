@@ -22,3 +22,9 @@
    - 'NPI' for the NN model.
      
    Default is PI-MESS. This will save the chosen model inside the `models` directory within the `code` directory.
+
+4. **Generate predictions**
+
+   The model can be used to generate predictions over the contemporary period (up to 2022) or into the future. Climate projections (included in the data release) are available 2041-2059 and 2080-2099.
+   - Run `predict_contemporary.py` for contemporary period predictions;
+   - Run `forecast.py` for future predictions.
