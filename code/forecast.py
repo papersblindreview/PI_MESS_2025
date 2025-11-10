@@ -64,7 +64,6 @@ for gcm in gcm_list:
     
     preds_new[s] = np.stack((dates_numeric, depth_temp[:,0], preds_temp[:,0]), axis=-1)
     
-  print(np.unique(sites))
   with open(f"./model_results/forecast_{gcm.split('_')[-1][:-4]}_{suffix}.pkl", 'wb') as f:
     pickle.dump({'sites':np.unique(sites), 'preds':preds_new}, f)
 
