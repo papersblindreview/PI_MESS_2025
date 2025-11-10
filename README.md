@@ -37,5 +37,5 @@ Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of L
   
    ![Pred Mendota](figures/F2_pred_mendota.png)
 
-   ![Proj Mendota](figures/F3_pred_mendota.png)
+   ![Proj Mendota](figures/F3_proj_mendota.png)
 
