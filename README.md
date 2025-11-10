@@ -40,6 +40,6 @@ Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of L
 
 ## References
 
-1. Corson-Dosch, H. R., Mcaliley, W. A., Platt, L. R. C., Padilla, J. A., & Read, J. S. (2023). *Daily Water Column Temperature Predictions for Thousands of Midwest U.S. Lakes Between 1979–2022 and Under Future Climate Scenarios* [U.S. Geological Survey data release]. [https://doi.org/10.5066/P9EQQER7](https://doi.org/10.5066/P9EQQER7)
+1. Corson-Dosch, H. R., Mcaliley, W. A., Platt, L. R. C., Padilla, J. A., & Read, J. S. (2023). *Daily Water Column Temperature Predictions for Thousands of Midwest U.S. Lakes Between 1979–2022 and Under Future Climate Scenarios*. [https://doi.org/10.5066/P9EQQER7](https://doi.org/10.5066/P9EQQER7)
 2. Hipsey, M. R., Bruce, L. C., Boon, C., Busch, B., Carey, C. C., Hamilton, D. P., Hanson, P. C., Read, J. S., de Sousa, E., Weber, M., & Winslow, L. A. (2019). *A General Lake Model (GLM 3.0) for linking with high‑frequency sensor data from the Global Lake Ecological Observatory Network (GLEON)*. Geoscientific Model Development, 12(1), 473‑523. [https://doi.org/10.5194/gmd-12-473-2019](https://doi.org/10.5194/gmd-12-473-2019)
 
