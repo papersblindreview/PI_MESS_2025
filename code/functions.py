@@ -135,7 +135,7 @@ def load_full():
   dates = data['dates']
   lonlat = data['lonlat']
 
-  with open('../data/full_data_info.pkl' + i, 'rb') as f:
+  with open('../data/full_data_info.pkl', 'rb') as f:
       sites = pickle.load(f) 
 
   return time_vars, space_vars, max_depth, dates, lonlat, np.array(sites).reshape(-1,1)
