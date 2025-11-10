@@ -109,8 +109,9 @@ preds_pi = []
 weight_new = []
 pars_new = []
 sites_new = []
-n_depths = 25
 
+# number of equally spaced depths to predict
+n_depths = 25
 for i, s in enumerate(unique_locations):
   
   mask = tf.reduce_all(tf.equal(features_space_tf[:,:2], s), axis=1)
@@ -126,7 +127,7 @@ for i, s in enumerate(unique_locations):
   depth_temp = tf.constant(np.linspace(0, tf.reduce_max(max_depth_temp), n_depths), dtype=tf.float32)
   depth_temp = tf.reshape(tf.tile(depth_temp, [features_time_temp.shape[0] // n_depths]), [-1,1])
   
-  if 'moe' in suffix:
+  if suffix == 'MOE':
     preds_ml_, preds_pi_, weight_new_, pars_new_ = predict_full_location_pars(features_time_temp, features_space_temp, depth_temp, max_depth_temp)
     preds_ml.append(preds_ml_.numpy())
     preds_pi.append(preds_pi_.numpy())
@@ -140,7 +141,7 @@ for i, s in enumerate(unique_locations):
   
 
 
-np.savez(f'./model_results/preds_val_{suffix}_{row_number:02d}.npz',
+np.savez(f'./results/preds_val_{suffix}.npz',
         locations = np.asarray(unique_locations),
         preds = np.asarray(preds_new),
         preds_ml = np.asarray(preds_ml),
@@ -149,7 +150,7 @@ np.savez(f'./model_results/preds_val_{suffix}_{row_number:02d}.npz',
         pars = np.asarray(pars_new),
         n_depths_per_loc = n_depths)
 
-with open(f'./model_results/preds_val_sites_{suffix}_{row_number:02d}.pkl', 'wb') as f:
+with open(f'./results/preds_val_sites_{suffix}.pkl', 'wb') as f:
   pickle.dump(np.asarray(sites_new), f) 
         
         
