@@ -7,7 +7,7 @@
    All required datasets can be obtained from the USGS ScienceBase repository:  
    [https://www.sciencebase.gov/catalog/item/6206d3c2d34ec05caca53071](https://www.sciencebase.gov/catalog/item/6206d3c2d34ec05caca53071)
 
-   ![Project Diagram](../figures/F1_descriptive.png)
+   ![Project Diagram](figures/F1_descriptive.png)
 
 3. **Organize the data files**
 
