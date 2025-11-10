@@ -1,6 +1,4 @@
-# PI_MESS_2025
-
-Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of Lake Temperature Profiles".
+# Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of Lake Temperature Profiles".
 
 ## Data Setup and Running the Code
 
