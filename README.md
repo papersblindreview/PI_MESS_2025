@@ -4,7 +4,7 @@
 
 1. **Download the data**
 
-   All required datasets can be obtained from the [USGS ScienceBase repository](#references). The figure below shows the spatial distribution of lakes as well as two representative lakes (one deep and one shallow).
+   All required datasets can be obtained from the [USGS ScienceBase repository](#references). The figure below shows the spatial distribution of lakes as well as two representative lakes (one deep and one shallow). Deep lakes exhibit seasonality in the form of a stratified profile in the summer months and a fully-mixed profile otherwise. Shallow lakes do not mix, as the profile tends to remains uniform.
    
    ![Project Diagram](figures/F1_descriptive.png)
 
