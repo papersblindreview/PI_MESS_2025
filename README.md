@@ -6,7 +6,7 @@ Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of L
 
 1. **Download the data**
 
-   All required datasets can be obtained from the USGS ScienceBase repository:  
+   All required datasets can be obtained from the USGS ScienceBase repository [1]:  
    [https://www.sciencebase.gov/catalog/item/6206d3c2d34ec05caca53071](https://www.sciencebase.gov/catalog/item/6206d3c2d34ec05caca53071). The figure below shows the spatial distribution of lakes as well as two representative lakes (one deep and one shallow).
    
    ![Project Diagram](figures/F1_descriptive.png)
@@ -33,9 +33,14 @@ Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of L
    - Run `predict_contemporary.py` for contemporary period predictions;
    - Run `forecast.py` for future predictions.
 
-  The figures below show predictions and projections for Lake Mendota, WI.
+  The figures below show predictions and projections for Lake Mendota, WI. In the predictions figure we show results from a General Lake Model (GLM), as described by Hipsey et al. (2019) [2], for comparison purposes with PI-MESS, .
   
    ![Pred Mendota](figures/F2_pred_mendota.png)
 
    ![Proj Mendota](figures/F3_proj_mendota.png)
+
+## References
+
+1. U.S. Geological Survey (2023). Lake dataset: Spatial distribution of lakes and representative deep/shallow lakes (ScienceBase Item 6206d3c2d34ec05caca53071). Retrieved from https://www.sciencebase.gov/catalog/item/6206d3c2d34ec05caca53071
+2. Hipsey, M. R., Bruce, L. C., Boon, C., Busch, B., Carey, C. C., Hamilton, D. P., Hanson, P. C., Read, J. S., de Sousa, E., Weber, M., & Winslow, L. A. (2019). *A General Lake Model (GLM 3.0) for linking with high‑frequency sensor data from the Global Lake Ecological Observatory Network (GLEON)*. Geoscientific Model Development, 12(1), 473‑523. [https://doi.org/10.5194/gmd-12-473-2019](https://doi.org/10.5194/gmd-12-473-2019)
 
