@@ -1,4 +1,4 @@
-# Supplemental codes for "A Spatiotemporal Physics-Informed State-Space Model of Lake Temperature Profiles"
+# Supplemental codes for "A Spatiotemporal Physics-Motivated State-Space Model of Lake Temperature Profiles"
 
 ## Data Setup and Running the Code
 
@@ -15,14 +15,14 @@
    - `data/meteo_csv_files` — contains **ALL NLDAS weather files**;  
    - Any remaining data files may be placed directly in the `data` directory.
   
-4. **Train the PI-MESS model**
+4. **Train the PM-MESS model**
 
    The user should first create the training and testing datasets by running the create_training_dataset.py script. Then, run the `train_model.py` script. At the top of the `train_model.py` script, the toggle ''suffix'' controls which type of model is trained:
-   - 'MOE' for the PI-MESS model;
-   - 'PINN' for the PINN model;
+   - 'MOE' for the PM-MESS model;
+   - 'PINN' for the PMNN model;
    - 'NPI' for the NN model.
      
-   Default is PI-MESS. This will save the chosen model inside the `models` directory within the `code` directory. The figure below shows an illustration of the PI-MESS model architecture.
+   Default is PM-MESS. This will save the chosen model inside the `models` directory within the `code` directory. The figure below shows an illustration of the PI-MESS model architecture.
 
    ![DAG](figures/F2_DAG.png)
 
@@ -32,7 +32,7 @@
    - Run `predict_contemporary.py` for contemporary period predictions;
    - Run `forecast.py` for future predictions.
 
-  The figures below show predictions (over the validtion period 2016-2022) and projections for Lake Mendota, WI. In the predictions figure we show results from a General Lake Model (GLM), as described by [Hipsey et al. (2019)](#references), for comparison purposes with PI-MESS.
+  The figures below show predictions (over the validtion period 2016-2022) and projections for Lake Mendota, WI. In the predictions figure we show results from a General Lake Model (GLM), as described by [Hipsey et al. (2019)](#references), for comparison purposes with PM-MESS.
   
    ![Pred Mendota](figures/F3_predictions_mendota.png)
 
