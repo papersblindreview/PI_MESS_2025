@@ -22,7 +22,7 @@
    - 'PINN' for the PMNN model;
    - 'NPI' for the NN model.
      
-   Default is PM-MESS. This will save the chosen model inside the `models` directory within the `code` directory. The figure below shows an illustration of the PI-MESS model architecture.
+   Default is PM-MESS. This will save the chosen model inside the `models` directory within the `code` directory. The figure below shows an illustration of the PM-MESS model architecture.
 
    ![DAG](figures/F2_DAG.png)
 
